@@ -223,6 +223,17 @@ public class BikeServiceImpl implements BikeService {
         }
 
     }
+    @Override
+    public ResponseEntity<ResponseObject> findById(Long id) {
+        try {
+            Bike bike = bikeRepository.findById(id).orElseThrow(() -> new ValidationException("Bike is not existed"));
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ResponseObject(HttpStatus.OK.toString(), "Successful", null, convertToDTO(bike)));
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ResponseObject(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null, null));
+        }
+    }
 
 
     public BikeDTO convertToDTO(Bike bike) {
@@ -238,6 +249,7 @@ public class BikeServiceImpl implements BikeService {
         bikeDTO.setOwnerName(bike.getUser().getFirstName() + " "+ bike.getUser().getLastName());
         bikeDTO.setColorsName(getBikeColorsName(bike));
         bikeDTO.setOwnerShop(bike.getOwnerShop().getName());
+        bikeDTO.setOwnerShopAddress(bike.getOwnerShop().getAddress());
         bikeDTO.setBikeStatus(bike.getBikeStatus().getName());
 
         return bikeDTO;

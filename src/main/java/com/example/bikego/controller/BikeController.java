@@ -24,6 +24,32 @@ public class BikeController {
         this.bikeService = bikeService;
         this.userService = userService;
     }
+    @Operation(summary = "for admin get bike by id")
+    @GetMapping("bike/{uid}")
+    public ResponseEntity<ResponseObject> getBikeById (@PathVariable("uid") String uid,@RequestParam Long id) {
+        try {
+            // Lấy người dùng hiện tại từ session
+            User currentUser = userService.getCurrentUser(uid);
+
+            // Kiểm tra vai trò của người dùng
+            if (currentUser.getRole().getName().equalsIgnoreCase("ADMIN")) {
+                // Người dùng có vai trò "ADMIN", cho phép truy cập API getAllBikeBrand
+                return bikeService.findById(id);
+            } else {
+                // Người dùng không có quyền truy cập API getAllBikeBrand
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(new ResponseObject("Error", "Unauthorized", null,null));
+            }
+        } catch (AuthenticationFailedException e) {
+            // Xử lý nếu xảy ra lỗi xác thực người dùng
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new ResponseObject("Error", e.getMessage(), null,null));
+        } catch (ValidationException e) {
+            // Xử lý nếu xảy ra lỗi trong việc tìm kiếm người dùng
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ResponseObject("Error", e.getMessage(), null,null));
+        }
+    }
 
     @Operation(summary = "for admin get all bike")
     @GetMapping("{uid}")

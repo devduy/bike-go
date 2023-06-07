@@ -13,6 +13,7 @@ public interface BikeService {
     ResponseEntity<ResponseObject> createBike(String uid, BikeCreateDTO bikeCreateDTO);
 
     ResponseEntity<ResponseObject> getAllBike();
+    ResponseEntity<ResponseObject> findById(Long id);
 
     ResponseEntity<ResponseObject> softDeleteBike(Long id);
 
