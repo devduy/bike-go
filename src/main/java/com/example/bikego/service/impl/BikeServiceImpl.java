@@ -245,13 +245,14 @@ public class BikeServiceImpl implements BikeService {
         BikeDTO bikeDTO = modelMapper.map(bike, BikeDTO.class);
         bikeDTO.setBikeBrandName(bike.getBikeBrand().getName());
         bikeDTO.setBikeTypeName(bike.getBikeType().getName());
-        bikeDTO.setCreateDate(String.valueOf(bike.getCreateDate()));
-        bikeDTO.setUpdateDate(String.valueOf(bike.getUpdateDate()));
+//        bikeDTO.setCreateDate(String.valueOf(bike.getCreateDate()));
+//        bikeDTO.setUpdateDate(String.valueOf(bike.getUpdateDate()));
         bikeDTO.setCreatedBy(bike.getCreatedBy().getFirstName() +" "+ bike.getCreatedBy().getLastName());
         bikeDTO.setOwnerName(bike.getUser().getFirstName() + " "+ bike.getUser().getLastName());
         bikeDTO.setColorsName(getBikeColorsName(bike));
         bikeDTO.setOwnerShop(bike.getOwnerShop().getName());
         bikeDTO.setOwnerShopAddress(bike.getOwnerShop().getAddress());
+        bikeDTO.setImgUrl(getBikeImgUrl(bike));
         bikeDTO.setBikeStatus(bike.getBikeStatus().getName());
 
         return bikeDTO;
@@ -259,14 +260,21 @@ public class BikeServiceImpl implements BikeService {
     public List<String> getBikeColorsName(Bike bike) {
         List<String> bikeColors = new ArrayList<>();
 
-
             List<BikeColor> colors = bike.getBikeColorList();
             for (BikeColor color : colors) {
                 bikeColors.add(color.getName());
             }
 
-
         return bikeColors;
+    }
+    public List<String> getBikeImgUrl(Bike bike) {
+        List<String> bikeImgUrls = new ArrayList<>();
+        List<BikeImage> bikeImages = bike.getBikeImageList();
+        for (BikeImage imgUrl: bikeImages
+             ) {
+            bikeImgUrls.add(imgUrl.getImgUrl());
+        }
+        return bikeImgUrls;
     }
 
 }

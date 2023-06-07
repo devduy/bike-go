@@ -33,6 +33,7 @@ public class BikeDTO {
     private String ownerShop;
     private String ownerShopAddress;
     private String bikeStatus;
+    private List<String> imgUrl;
     private List<String> colorsName;
 
 }

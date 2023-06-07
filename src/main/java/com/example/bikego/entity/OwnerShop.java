@@ -45,6 +45,8 @@ public class OwnerShop {
     @NotNull
     private String address;
 
+    private String imgUrl;
+
     @OneToOne(mappedBy = "ownerShop")
     private User user;
 
