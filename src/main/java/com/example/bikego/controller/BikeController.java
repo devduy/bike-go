@@ -24,7 +24,7 @@ public class BikeController {
         this.bikeService = bikeService;
         this.userService = userService;
     }
-    @Operation(summary = "for admin get bike by id")
+    @Operation(summary = "for get bike by id")
     @GetMapping("bike/{uid}")
     public ResponseEntity<ResponseObject> getBikeById (@PathVariable("uid") String uid,@RequestParam Long id) {
         try {
@@ -32,7 +32,8 @@ public class BikeController {
             User currentUser = userService.getCurrentUser(uid);
 
             // Kiểm tra vai trò của người dùng
-            if (currentUser.getRole().getName().equalsIgnoreCase("ADMIN")) {
+            if (currentUser.getRole().getName().equalsIgnoreCase("ADMIN") ||
+                    currentUser.getRole().getName().equalsIgnoreCase("OWNER")) {
                 // Người dùng có vai trò "ADMIN", cho phép truy cập API getAllBikeBrand
                 return bikeService.findById(id);
             } else {

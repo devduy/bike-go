@@ -19,7 +19,8 @@ public interface BikeRepository extends JpaRepository<Bike, Long> {
     @Filter(name = "notDeleted")
     Optional<Bike> findById(Long id);
 
-    Page<Bike> findByBikeStatus(BikeStatus bikeStatus, Pageable pageable);
-    @Query("SELECT b FROM Bike b WHERE b.user.id = :userId and b.deleted = false ")
+    @Query("SELECT b from Bike b where b.bikeStatus = :bikeStatus and b.user.id = :uid ")
+    Page<Bike> findByBikeStatus(BikeStatus bikeStatus,String uid, Pageable pageable);
+    @Query("SELECT b FROM Bike b WHERE b.user.id = :userId ")
     Page<Bike> findAllByUserId(String userId, Pageable pageable);
 }

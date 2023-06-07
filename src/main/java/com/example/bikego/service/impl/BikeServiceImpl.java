@@ -206,9 +206,11 @@ public class BikeServiceImpl implements BikeService {
             Page<Bike> bikePage;
             if(idStatus == null) {
                 bikePage = bikeRepository.findAllByUserId(uid,pageable);
+                System.out.println(bikePage);
             }else {
-                BikeStatus bikeStatus = bikeStatusRepository.findById(idStatus).orElseThrow(() -> new ValidationException("Bike is not existed"));
-                bikePage = bikeRepository.findByBikeStatus(bikeStatus,pageable);
+                BikeStatus bikeStatus = bikeStatusRepository.findById(idStatus).orElseThrow(() -> new ValidationException("Bike Status is not existed"));
+
+                bikePage = bikeRepository.findByBikeStatus(bikeStatus,uid,pageable);
             }
             bikeList = bikePage.getContent();
             List<BikeDTO> bikeDTOList = bikeList.stream().map(this::convertToDTO).toList();

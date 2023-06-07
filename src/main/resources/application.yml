@@ -40,7 +40,9 @@ springdoc:
     operations-sorter: alpha
     path: /swagger-ui-custom.html
     enabled: true
-
+firebase:
+  bucket-name: bikego-8f323.appspot.com
+  image-url: https://storage.googleapis.com/${firebase.bucket-name}/%s
 
 
 
