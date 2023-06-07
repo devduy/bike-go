@@ -1,6 +1,6 @@
 server:
   servlet:
-    context-path: /bikego
+#    context-path: /bikego
     session:
       timeout: 5400
 

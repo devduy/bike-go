@@ -18,7 +18,7 @@ public class SwaggerUIConfiguration {
         localServer.setDescription("Server URL in Local environment");
 
         Server productionServer = new Server();
-        productionServer.setUrl("");
+        productionServer.setUrl("bikego-server-production.up.railway.app");
         productionServer.setDescription("Server URL in Production environment");
 
         Info info = new Info()
