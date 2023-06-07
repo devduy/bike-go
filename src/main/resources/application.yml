@@ -1,5 +1,4 @@
 server:
-  port: 5000
   servlet:
     context-path: /bikego
     session:
@@ -39,6 +38,7 @@ springdoc:
     tags-sorter: alpha
     operations-sorter: alpha
     path: /swagger-ui-custom.html
+    enabled: true
 
 
 
