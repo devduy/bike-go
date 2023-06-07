@@ -14,11 +14,11 @@ public class SwaggerUIConfiguration {
     public OpenAPI myOpenAPI() {
 
         Server localServer = new Server();
-        localServer.setUrl("http://localhost:5000");
+        localServer.setUrl("http://localhost:5000/bikego");
         localServer.setDescription("Server URL in Local environment");
 
         Server productionServer = new Server();
-        productionServer.setUrl("bikego-server-production.up.railway.app");
+        productionServer.setUrl("https://bikego-server-production.up.railway.app/bikego");
         productionServer.setDescription("Server URL in Production environment");
 
         Info info = new Info()

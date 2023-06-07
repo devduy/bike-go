@@ -1,8 +1,9 @@
 server:
   servlet:
-#    context-path: /bikego
+    context-path: /bikego
     session:
       timeout: 5400
+  port: 5000
 
 spring:
   datasource:
@@ -32,7 +33,7 @@ spring:
         enable_lazy_load_no_trans=true:
 
   #Swagger
-#localhost:8090/bikego/swagger-ui.html
+#localhost:5000/bikego/swagger-ui.html
 springdoc:
   swagger-ui:
     tags-sorter: alpha
