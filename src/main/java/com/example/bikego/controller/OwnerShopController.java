@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.ValidationException;
-
+@CrossOrigin
 @RestController
 @RequestMapping(value = "/api/v1/owner-shop")
 public class OwnerShopController {

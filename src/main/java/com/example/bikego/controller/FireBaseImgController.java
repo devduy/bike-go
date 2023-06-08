@@ -5,12 +5,9 @@ import com.example.bikego.service.FireBaseImgService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
+@CrossOrigin
 @RestController
 @RequestMapping(value = "/api/v1/fire-base")
 public class FireBaseImgController {

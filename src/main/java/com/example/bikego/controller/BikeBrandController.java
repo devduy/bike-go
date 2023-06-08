@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.ValidationException;
-
+@CrossOrigin
 @RestController
 @RequestMapping("/api/v1/bike-brand")
 public class BikeBrandController {
