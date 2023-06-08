@@ -22,9 +22,9 @@ public class OwnerShopController {
         this.ownerShopService = ownerShopService;
         this.userService = userService;
     }
-    @Operation(summary = "for get owner shop by id")
-    @GetMapping("owner-shop/{uid}")
-    public ResponseEntity<ResponseObject> getOwnerShopById (@PathVariable("uid") String uid, @RequestParam Long id) {
+    @Operation(summary = "for get all owner shop")
+    @GetMapping("/{uid}")
+    public ResponseEntity<ResponseObject> getAll(@PathVariable("uid") String uid) {
         try {
             // Lấy người dùng hiện tại từ session
             User currentUser = userService.getCurrentUser(uid);
@@ -33,7 +33,7 @@ public class OwnerShopController {
             if (currentUser.getRole().getName().equalsIgnoreCase("ADMIN") ||
                     currentUser.getRole().getName().equalsIgnoreCase("OWNER")) {
                 // Người dùng có vai trò "ADMIN", cho phép truy cập API getAllBikeBrand
-                return ownerShopService.findById(id);
+                return ownerShopService.getAll();
             } else {
                 // Người dùng không có quyền truy cập API getAllBikeBrand
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
@@ -49,9 +49,9 @@ public class OwnerShopController {
                     .body(new ResponseObject("Error", e.getMessage(), null,null));
         }
     }
-    @Operation(summary = "for get all owner shop")
-    @GetMapping("/{uid}")
-    public ResponseEntity<ResponseObject> getAll(@PathVariable("uid") String uid) {
+    @Operation(summary = "for get owner shop by user")
+    @GetMapping("shop/{uid}")
+    public ResponseEntity<ResponseObject> getOwnerShopByUser(@PathVariable("uid") String uid) {
         try {
             // Lấy người dùng hiện tại từ session
             User currentUser = userService.getCurrentUser(uid);
@@ -60,7 +60,7 @@ public class OwnerShopController {
             if (currentUser.getRole().getName().equalsIgnoreCase("ADMIN") ||
                     currentUser.getRole().getName().equalsIgnoreCase("OWNER")) {
                 // Người dùng có vai trò "ADMIN", cho phép truy cập API getAllBikeBrand
-                return ownerShopService.getAll();
+                return ownerShopService.getShopByUserId(uid);
             } else {
                 // Người dùng không có quyền truy cập API getAllBikeBrand
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
