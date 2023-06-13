@@ -134,11 +134,8 @@ public class MobileAppImpl implements MobileAppService {
             List<RentHistory> rentHistories = new ArrayList<>();
             Pageable pageable = PageRequest.of(pageNumber,pageSize);
             Page<RentHistory> bikePage;
-            //System.out.println(rentHistory.getRentUser().getFirstName());
             if(status == null) {
                 bikePage = rentHistoryRepository.findAllByRentUser(user,pageable);
-
-                //.out.println(rentHistoryRepository.findByRentUser(user).getRentUser());
             }else {
                 bikePage = rentHistoryRepository.findByUserAndRentStatusPage(user,RentStatus.valueOf(status),pageable);
 
