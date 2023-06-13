@@ -21,6 +21,8 @@ public class DateTimeUtils {
         return LocalDateTime.now().format(DATETIME_FORMATTER);
     }
 
+    public static String dateNow() {return LocalDate.now().format(DateTimeFormatter.ofPattern(DATE_FORMAT));}
+
     public static LocalDate convertStringToLocalDate(String date) throws ParseException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
         return LocalDate.parse(date,formatter);

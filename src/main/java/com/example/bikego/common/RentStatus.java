@@ -2,7 +2,7 @@ package com.example.bikego.common;
 
 public enum RentStatus {
     COMPLETED("Đã hoàn thành"),
-    INCOMPLETE("Chưa thuê"),
+    IN_ORDER("Chờ xác nhận"),
     IN_PROGRESS("Đang thuê");
     private final String value;
     RentStatus(String value) {

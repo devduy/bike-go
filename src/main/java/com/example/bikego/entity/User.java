@@ -82,12 +82,16 @@ public class User {
     @JoinColumn(name = "shop_id", referencedColumnName = "id")
     private OwnerShop ownerShop;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "rentUser")
     @JsonIgnore
     private List<RentHistory> rentHistoryList;
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<Bike> bikeList;
+
+//    @OneToMany(mappedBy = "rentUser")
+//    @JsonIgnore
+//    private List<Bike> bikeRentList;
 
 }

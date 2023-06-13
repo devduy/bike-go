@@ -27,8 +27,6 @@ public class UserController {
         try {
             // Lấy người dùng hiện tại từ session
             User currentUser = userService.getCurrentUser(uid);
-            System.out.println(currentUser.getRole().getName());
-
             // Kiểm tra vai trò của người dùng
             if (currentUser.getRole().getName().equalsIgnoreCase("ADMIN")) {
                 // Người dùng có vai trò "ADMIN", cho phép truy cập API getAllBikeBrand
@@ -54,11 +52,12 @@ public class UserController {
         try {
             // Lấy người dùng hiện tại từ session
             User currentUser = userService.getCurrentUser(uid);
-            System.out.println(currentUser.getRole().getName());
 
             // Kiểm tra vai trò của người dùng
-            if (currentUser.getRole().getName().equalsIgnoreCase("ADMIN") ||
-                    currentUser.getRole().getName().equalsIgnoreCase("OWNER") ) {
+            String role = currentUser.getRole().getName();
+            if (role.equalsIgnoreCase("ADMIN") ||
+                    role.equalsIgnoreCase("OWNER") ||
+                    role.equalsIgnoreCase("CUSTOMER")  ) {
                 // Người dùng có vai trò "ADMIN", cho phép truy cập API getAllBikeBrand
                 return userService.getUserDetail(uid);
             } else {

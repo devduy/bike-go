@@ -1,6 +1,7 @@
 package com.example.bikego.entity.Bike;
 
 import com.example.bikego.entity.OwnerShop;
+import com.example.bikego.entity.RentHistory;
 import com.example.bikego.entity.User;
 import com.example.bikego.utils.DateTimeUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -71,6 +72,14 @@ public class Bike {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "rent_id")
+    private User rentUser;
+
+    @OneToMany(mappedBy = "bikeRent")
+    @JsonIgnore
+    private List<RentHistory> rentHistoryList;
 
     @OneToMany(mappedBy = "bike")
     @JsonIgnore

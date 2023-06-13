@@ -237,8 +237,8 @@ public class UserServiceImpl implements UserService {
         }
         UserDTO userDTO = modelMapper.map(user, UserDTO.class);
         userDTO.setBirthday(String.valueOf(user.getBirthday()));
-        userDTO.setCreateDate(String.valueOf(user.getCreateDate()));
-        userDTO.setUpdateDate(String.valueOf(user.getUpdateDate()));
+//        userDTO.setCreateDate(String.valueOf(user.getCreateDate()));
+//        userDTO.setUpdateDate(String.valueOf(user.getUpdateDate()));
         userDTO.setOwnerShopName(user.getOwnerShop().getName());
         userDTO.setOwnerShopAddress(user.getOwnerShop().getAddress());
         return userDTO;
