@@ -85,6 +85,7 @@ public class MobileAppImpl implements MobileAppService {
             rentHistory.setStartRentDate(DateTimeUtils.convertStringToLocalDate(DateTimeUtils.dateNow()));
             rentHistory.setEndRentDate(DateTimeUtils.convertStringToLocalDate(rentBikeForm.getEndRentDate()));
             rentHistory.setRentStatus(RentStatus.IN_PROGRESS);
+            rentHistory.setOwner(bike.getUser());
             bikeRepository.save(bike);
             rentHistoryRepository.save(rentHistory);
 
@@ -156,8 +157,9 @@ public class MobileAppImpl implements MobileAppService {
 
     public RentHistoryDTO convertToDTO(RentHistory rentHistory) {
         RentHistoryDTO rentHistoryDTO = modelMapper.map(rentHistory, RentHistoryDTO.class);
-        rentHistoryDTO.setUserDTO(userService.convertToDTO(rentHistory.getRentUser()));
+        rentHistoryDTO.setUserRentDTO(userService.convertToUserRentDTO(rentHistory.getRentUser()));
         rentHistoryDTO.setBikeDTO(bikeService.convertToDTO(rentHistory.getBikeRent()));
+        rentHistoryDTO.setOwner(userService.convertToDTO(rentHistory.getOwner()));
         return rentHistoryDTO;
     }
 

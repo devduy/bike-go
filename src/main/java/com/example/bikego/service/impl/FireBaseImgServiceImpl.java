@@ -21,6 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class FireBaseImgServiceImpl implements FireBaseImgService {

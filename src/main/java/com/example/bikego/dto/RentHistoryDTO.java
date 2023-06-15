@@ -29,5 +29,6 @@ public class RentHistoryDTO {
     private LocalDate endRentDate;
     private BigDecimal totalPrice;
     private BikeDTO bikeDTO;
-    private UserDTO userDTO;
+    private UserRentDTO userRentDTO;
+    private UserDTO owner;
 }

@@ -1,10 +1,12 @@
 package com.example.bikego.service;
 
 import com.example.bikego.dto.*;
+import com.example.bikego.entity.Bike.Bike;
 import com.example.bikego.exception.InvalidRequestForBike;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface BikeService {
     Page<BikeCreateDTO> getFilterPaging(BikePage bikePage, BikeFilterDTO bikeFilterDTO);

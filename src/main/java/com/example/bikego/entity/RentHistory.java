@@ -48,6 +48,11 @@ public class RentHistory {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
+    @JoinColumn(name = "owner_id", nullable = true)
+    private User owner;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "bike_id")
     private Bike bikeRent;
 

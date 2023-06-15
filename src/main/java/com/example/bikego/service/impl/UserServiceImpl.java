@@ -243,4 +243,13 @@ public class UserServiceImpl implements UserService {
         userDTO.setOwnerShopAddress(user.getOwnerShop().getAddress());
         return userDTO;
     }
+
+    public UserRentDTO convertToUserRentDTO(User user) {
+        if(user == null) {
+            return null;
+        }
+        UserRentDTO userRentDTO = modelMapper.map(user,UserRentDTO.class);
+        userRentDTO.setBirthday(String.valueOf(user.getBirthday()));
+        return userRentDTO;
+    }
 }

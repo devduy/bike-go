@@ -1,30 +1,28 @@
 package com.example.bikego.service.impl;
 
-import com.example.bikego.common.BikeFilter;
 import com.example.bikego.dto.*;
 import com.example.bikego.entity.Bike.*;
 import com.example.bikego.entity.OwnerShop;
 import com.example.bikego.entity.User;
 import com.example.bikego.repository.*;
 import com.example.bikego.service.BikeService;
+import com.example.bikego.service.FireBaseImgService;
 import com.example.bikego.service.UserService;
 import com.example.bikego.validation.ValidationOfRequestForGetBike;
-import jakarta.servlet.http.HttpSession;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class BikeServiceImpl implements BikeService {
@@ -37,11 +35,15 @@ public class BikeServiceImpl implements BikeService {
     private final ModelMapper modelMapper;
     private final UserService userService;
 
+    private final UserServiceImpl userServiceImpl;
+    private final FireBaseImgService fireBaseImgService;
+    private final BikeImageRepository bikeImageRepository;
+
     private final ValidationOfRequestForGetBike validationOfRequestForGetBike;
 
     @Autowired
     public BikeServiceImpl(BikeRepository bikeRepository, BikeBrandRepository bikeBrandRepository,
-                           BikeTypeRepository bikeTypeRepository, BikeColorRepository bikeColorRepository, OwnerShopRepository ownerShopRepository, BikeStatusRepository bikeStatusRepository, ModelMapper modelMapper, UserService userService, ValidationOfRequestForGetBike validationOfRequestForGetBike) {
+                           BikeTypeRepository bikeTypeRepository, BikeColorRepository bikeColorRepository, OwnerShopRepository ownerShopRepository, BikeStatusRepository bikeStatusRepository, ModelMapper modelMapper, UserService userService, UserServiceImpl userServiceImpl, FireBaseImgService fireBaseImgService, BikeImageRepository bikeImageRepository, ValidationOfRequestForGetBike validationOfRequestForGetBike) {
         this.bikeRepository = bikeRepository;
         this.bikeBrandRepository = bikeBrandRepository;
         this.bikeTypeRepository = bikeTypeRepository;
@@ -50,6 +52,9 @@ public class BikeServiceImpl implements BikeService {
         this.bikeStatusRepository = bikeStatusRepository;
         this.modelMapper = modelMapper;
         this.userService = userService;
+        this.userServiceImpl = userServiceImpl;
+        this.fireBaseImgService = fireBaseImgService;
+        this.bikeImageRepository = bikeImageRepository;
         this.validationOfRequestForGetBike = validationOfRequestForGetBike;
     }
     @Autowired
@@ -97,6 +102,8 @@ public class BikeServiceImpl implements BikeService {
             BikeStatus bikeStatus = bikeStatusRepository.findByName(bikeCreateDTO.getBikeStatusName());
             BikeType bikeType = bikeTypeRepository.findByName(bikeCreateDTO.getBikeTypeName());
             List<BikeColor> bikeColorList = new ArrayList<>();
+            List<BikeImage> bikeImageList = new ArrayList<>();
+            BikeImage bikeImage = new BikeImage();
             for (String name: bikeCreateDTO.getBikeColorName()
             ) {
                 bikeColorList.add(bikeColorRepository.findByName(name));
@@ -126,7 +133,13 @@ public class BikeServiceImpl implements BikeService {
             bike.setBikeType(bikeType);
             bike.setOwnerShop(ownerShop);
             bike.setBikeStatus(bikeStatus);
+            bikeImage.setBike(bike);
+            bikeImage.setImgUrl(bikeCreateDTO.getImgUrl());
+
+            bikeImageList.add(bikeImage);
+            bike.setBikeImageList(bikeImageList);
             bikeRepository.save(bike);
+            bikeImageRepository.save(bikeImage);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new ResponseObject(HttpStatus.CREATED.toString(),"Create bike successfully", null, null));
 
@@ -225,12 +238,32 @@ public class BikeServiceImpl implements BikeService {
         }
 
     }
+
+//    public List<BikeImage> addImageToBike(Bike bike, MultipartFile[] files) {
+//        List<BikeImage> bikeImageList = new ArrayList<>();
+//        for (MultipartFile file : files) {
+//            try {
+//                BikeImage bikeImage = new BikeImage();
+//                String fileName = fireBaseImgService.save(file);
+//                String imageUrl = fireBaseImgService.getImageUrl(fileName);
+//                bikeImage.setBike(bike);
+//                bikeImage.setImgUrl(imageUrl);
+//                bikeImageRepository.save(bikeImage);
+//                bikeImageList.add(bikeImage);
+//            }catch (Exception e) {
+//                return null;
+//            }
+//
+//        }
+//        return bikeImageList;
+//    }
+
     @Override
     public ResponseEntity<ResponseObject> findById(Long id) {
         try {
             Bike bike = bikeRepository.findById(id).orElseThrow(() -> new ValidationException("Bike is not existed"));
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ResponseObject(HttpStatus.OK.toString(), "Successful", null, convertToDTO(bike)));
+                    .body(new ResponseObject(HttpStatus.OK.toString(), "Successful", null, convertToBikeOwnerDTO(bike)));
         }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ResponseObject(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null, null));
@@ -256,6 +289,24 @@ public class BikeServiceImpl implements BikeService {
         bikeDTO.setBikeStatus(bike.getBikeStatus().getName());
 
         return bikeDTO;
+    }
+    public BikeOwnerDTO convertToBikeOwnerDTO(Bike bike) {
+        if(bike == null) {
+            return null;
+        }
+        BikeOwnerDTO bikeOwnerDTO = modelMapper.map(bike, BikeOwnerDTO.class);
+        bikeOwnerDTO.setBikeBrandName(bike.getBikeBrand().getName());
+        bikeOwnerDTO.setBikeTypeName(bike.getBikeType().getName());
+        bikeOwnerDTO.setCreatedBy(bike.getCreatedBy().getFirstName() +" "+ bike.getCreatedBy().getLastName());
+        bikeOwnerDTO.setOwnerName(bike.getUser().getFirstName() + " "+ bike.getUser().getLastName());
+        bikeOwnerDTO.setColorsName(getBikeColorsName(bike));
+        bikeOwnerDTO.setOwnerShop(bike.getOwnerShop().getName());
+        bikeOwnerDTO.setOwnerShopAddress(bike.getOwnerShop().getAddress());
+        bikeOwnerDTO.setImgUrl(getBikeImgUrl(bike));
+        bikeOwnerDTO.setBikeStatus(bike.getBikeStatus().getName());
+        bikeOwnerDTO.setUserRentDTO(userServiceImpl.convertToUserRentDTO(bike.getRentUser()));
+        return bikeOwnerDTO;
+
     }
     public List<String> getBikeColorsName(Bike bike) {
         List<String> bikeColors = new ArrayList<>();

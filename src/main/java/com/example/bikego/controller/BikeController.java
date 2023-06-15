@@ -8,8 +8,10 @@ import com.example.bikego.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.ValidationException;
 
@@ -82,8 +84,11 @@ public class BikeController {
     }
 
     @Operation(summary = "for admin create bike")
-    @PostMapping("/create{uid}")
-    public ResponseEntity<ResponseObject> createBike (@PathVariable("uid") String uid,@RequestBody BikeCreateDTO bikeCreateDTO) {
+    @PostMapping(value = "/create/{uid}")
+    public ResponseEntity<ResponseObject> createBike (
+            @PathVariable("uid") String uid
+            ,@RequestBody BikeCreateDTO bikeCreateDTO
+            ) {
         try {
             // Lấy người dùng hiện tại từ session
             User currentUser = userService.getCurrentUser(uid);
