@@ -101,7 +101,8 @@ public class MobileAppController {
 
             // Kiểm tra vai trò của người dùng
             if (currentUser.getRole().getName().equalsIgnoreCase("ADMIN") ||
-                    currentUser.getRole().getName().equalsIgnoreCase("CUSTOMER")) {
+                    currentUser.getRole().getName().equalsIgnoreCase("CUSTOMER") ||
+                    currentUser.getRole().getName().equalsIgnoreCase("OWNER")) {
                 // Người dùng có vai trò "ADMIN", cho phép truy cập API getAllBikeBrand
                 return mobileAppService.finish(uid,bikeId);
             } else {
@@ -136,7 +137,8 @@ public class MobileAppController {
 
             // Kiểm tra vai trò của người dùng
             if (currentUser.getRole().getName().equalsIgnoreCase("ADMIN") ||
-                    currentUser.getRole().getName().equalsIgnoreCase("CUSTOMER")) {
+                    currentUser.getRole().getName().equalsIgnoreCase("CUSTOMER") ||
+                    currentUser.getRole().getName().equalsIgnoreCase("OWNER")) {
                 // Người dùng có vai trò "ADMIN", cho phép truy cập API getAllBikeBrand
                 return mobileAppService.getRentHistory(uid,pageNumber,pageSize,status);
             } else {

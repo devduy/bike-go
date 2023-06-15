@@ -14,9 +14,9 @@ public interface RentHistoryRepository extends JpaRepository<RentHistory, Long> 
 
     RentHistory findByRentUser(User user);
 
-    @Query("SELECT r from RentHistory r where r.rentUser = :user")
+    @Query("SELECT r from RentHistory r where r.rentUser = :user or r.owner = :user")
     Page<RentHistory> findAllByRentUser(User user, Pageable pageable);
 
-    @Query("SELECT r from RentHistory r where r.rentUser = :user and r.rentStatus = :rentStatus")
+    @Query("SELECT r from RentHistory r where r.rentUser = :user or r.owner = :user and r.rentStatus = :rentStatus")
     Page<RentHistory> findByUserAndRentStatusPage(User user, RentStatus rentStatus,Pageable pageable);
 }
