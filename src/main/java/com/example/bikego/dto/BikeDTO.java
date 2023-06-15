@@ -30,8 +30,7 @@ public class BikeDTO {
     private String updateDate;
     private String createdBy;
     private String ownerName;
-    private String ownerShop;
-    private String ownerShopAddress;
+    private OwnerShopDTO ownerShopDTO;
     private String bikeStatus;
     private List<String> imgUrl;
     private List<String> colorsName;

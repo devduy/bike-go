@@ -18,7 +18,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.ValidationException;
 import java.util.ArrayList;
@@ -39,11 +38,13 @@ public class BikeServiceImpl implements BikeService {
     private final FireBaseImgService fireBaseImgService;
     private final BikeImageRepository bikeImageRepository;
 
+    private final OwnerShopServiceImpl ownerShopService;
+
     private final ValidationOfRequestForGetBike validationOfRequestForGetBike;
 
     @Autowired
     public BikeServiceImpl(BikeRepository bikeRepository, BikeBrandRepository bikeBrandRepository,
-                           BikeTypeRepository bikeTypeRepository, BikeColorRepository bikeColorRepository, OwnerShopRepository ownerShopRepository, BikeStatusRepository bikeStatusRepository, ModelMapper modelMapper, UserService userService, UserServiceImpl userServiceImpl, FireBaseImgService fireBaseImgService, BikeImageRepository bikeImageRepository, ValidationOfRequestForGetBike validationOfRequestForGetBike) {
+                           BikeTypeRepository bikeTypeRepository, BikeColorRepository bikeColorRepository, OwnerShopRepository ownerShopRepository, BikeStatusRepository bikeStatusRepository, ModelMapper modelMapper, UserService userService, UserServiceImpl userServiceImpl, FireBaseImgService fireBaseImgService, BikeImageRepository bikeImageRepository, OwnerShopServiceImpl ownerShopService, ValidationOfRequestForGetBike validationOfRequestForGetBike) {
         this.bikeRepository = bikeRepository;
         this.bikeBrandRepository = bikeBrandRepository;
         this.bikeTypeRepository = bikeTypeRepository;
@@ -55,6 +56,7 @@ public class BikeServiceImpl implements BikeService {
         this.userServiceImpl = userServiceImpl;
         this.fireBaseImgService = fireBaseImgService;
         this.bikeImageRepository = bikeImageRepository;
+        this.ownerShopService = ownerShopService;
         this.validationOfRequestForGetBike = validationOfRequestForGetBike;
     }
     @Autowired
@@ -283,8 +285,9 @@ public class BikeServiceImpl implements BikeService {
         bikeDTO.setCreatedBy(bike.getCreatedBy().getFirstName() +" "+ bike.getCreatedBy().getLastName());
         bikeDTO.setOwnerName(bike.getUser().getFirstName() + " "+ bike.getUser().getLastName());
         bikeDTO.setColorsName(getBikeColorsName(bike));
-        bikeDTO.setOwnerShop(bike.getOwnerShop().getName());
-        bikeDTO.setOwnerShopAddress(bike.getOwnerShop().getAddress());
+//        bikeDTO.setOwnerShop(bike.getOwnerShop().getName());
+//        bikeDTO.setOwnerShopAddress(bike.getOwnerShop().getAddress());
+        bikeDTO.setOwnerShopDTO(ownerShopService.convertToDTO(bike.getOwnerShop()));
         bikeDTO.setImgUrl(getBikeImgUrl(bike));
         bikeDTO.setBikeStatus(bike.getBikeStatus().getName());
 

@@ -67,7 +67,7 @@ public class OwnerShopServiceImpl implements OwnerShopService {
         }
     }
 
-    private OwnerShopDTO convertToDTO(OwnerShop ownerShop) {
+    public OwnerShopDTO convertToDTO(OwnerShop ownerShop) {
         if(ownerShop == null) {
             return null;
         }

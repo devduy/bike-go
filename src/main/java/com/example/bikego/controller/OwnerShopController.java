@@ -30,8 +30,10 @@ public class OwnerShopController {
             User currentUser = userService.getCurrentUser(uid);
 
             // Kiểm tra vai trò của người dùng
-            if (currentUser.getRole().getName().equalsIgnoreCase("ADMIN") ||
-                    currentUser.getRole().getName().equalsIgnoreCase("OWNER")) {
+            String role = currentUser.getRole().getName();
+            if (role.equalsIgnoreCase("ADMIN") ||
+                    role.equalsIgnoreCase("OWNER") ||
+                    role.equalsIgnoreCase("CUSTOMER")) {
                 // Người dùng có vai trò "ADMIN", cho phép truy cập API getAllBikeBrand
                 return ownerShopService.getAll();
             } else {

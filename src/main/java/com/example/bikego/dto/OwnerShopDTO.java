@@ -10,6 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OwnerShopDTO {
+    private Long id;
     private String name;
     private String address;
     private String imgUrl;

@@ -121,7 +121,7 @@ public class BikeController {
         try {
             // Lấy người dùng hiện tại từ session
             User currentUser = userService.getCurrentUser(uid);
-            System.out.println(currentUser.getRole().getName());
+
 
             // Kiểm tra vai trò của người dùng
             if (currentUser.getRole().getName().equalsIgnoreCase("ADMIN") ||
@@ -153,7 +153,7 @@ public class BikeController {
         try {
             // Lấy người dùng hiện tại từ session
             User currentUser = userService.getCurrentUser(uid);
-            System.out.println(currentUser.getRole().getName());
+
 
             // Kiểm tra vai trò của người dùng
             if (currentUser.getRole().getName().equalsIgnoreCase("ADMIN") ||
@@ -185,7 +185,7 @@ public class BikeController {
         try {
             // Lấy người dùng hiện tại từ session
             User currentUser = userService.getCurrentUser(uid);
-            System.out.println(currentUser.getRole().getName());
+
 
             // Kiểm tra vai trò của người dùng
             if (currentUser.getRole().getName().equalsIgnoreCase("ADMIN") ||
