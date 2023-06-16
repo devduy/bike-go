@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface RentHistoryRepository extends JpaRepository<RentHistory, Long> {
+    @Query("SELECT r from RentHistory r where r.rentUser = :user or r.owner = :user and r.rentStatus = :rentStatus and r.bikeRent = :bike")
     RentHistory findByRentUserAndRentStatusAndBikeRent(User user, RentStatus rentStatus, Bike bike);
 
     RentHistory findByRentUser(User user);
