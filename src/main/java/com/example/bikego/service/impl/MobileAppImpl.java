@@ -155,6 +155,32 @@ public class MobileAppImpl implements MobileAppService {
 
     }
 
+    @Override
+    public ResponseEntity<ResponseObject> cancel(String uid, Long bikeId) {
+        try {
+
+            User user = userRepository.findById(uid).orElseThrow(() -> new ValidationException("User is not existed"));
+            Bike bike = bikeRepository.findById(bikeId).orElseThrow(() -> new ValidationException("Bike is not existed"));
+            BikeStatus bikeStatus = bikeStatusRepository.findById(1L).orElseThrow(() -> new ValidationException("Bike Status is not existed"));
+            if(bike.getBikeStatus() == bikeStatus) {
+                bike.setBikeStatus(bikeStatusRepository.findById(4L)
+                        .orElseThrow(() -> new ValidationException("Bike Status is not existed")));
+                bike.setRentUser(null);
+
+                RentHistory rentHistory = rentHistoryRepository.findByRentUserAndRentStatusAndBikeRent(user,RentStatus.IN_PROGRESS,bike);
+                bikeRepository.save(bike);
+                rentHistoryRepository.delete(rentHistory);
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(new ResponseObject(HttpStatus.OK.toString(), "Success", null, null));
+            }
+            throw new Exception("Bike Status is not valid");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ResponseObject(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null, null));
+
+        }
+    }
+
     public RentHistoryDTO convertToDTO(RentHistory rentHistory) {
         RentHistoryDTO rentHistoryDTO = modelMapper.map(rentHistory, RentHistoryDTO.class);
         rentHistoryDTO.setUserRentDTO(userService.convertToUserRentDTO(rentHistory.getRentUser()));

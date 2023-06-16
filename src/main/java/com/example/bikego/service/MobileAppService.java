@@ -11,4 +11,6 @@ public interface MobileAppService {
     ResponseEntity<ResponseObject> finish(String uid, Long bikeId);
 
     ResponseEntity<ResponseObject> getRentHistory(String uid,int pageNumber, int pageSize, String status);
+
+    ResponseEntity<ResponseObject> cancel(String uid, Long bikeId);
 }

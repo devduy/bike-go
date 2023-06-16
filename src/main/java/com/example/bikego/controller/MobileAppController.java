@@ -122,6 +122,36 @@ public class MobileAppController {
 
     }
     @CrossOrigin
+    @Operation(summary = "for user cancel order")
+    @PostMapping("/cancel{uid}")
+    public ResponseEntity<ResponseObject> cancel(@PathVariable("uid") String uid, @RequestParam Long bikeId) {
+        try {
+            // Lấy người dùng hiện tại từ session
+            User currentUser = userService.getCurrentUser(uid);
+
+            // Kiểm tra vai trò của người dùng
+            if (currentUser.getRole().getName().equalsIgnoreCase("ADMIN") ||
+                    currentUser.getRole().getName().equalsIgnoreCase("CUSTOMER") ||
+                    currentUser.getRole().getName().equalsIgnoreCase("OWNER")) {
+                // Người dùng có vai trò "ADMIN", cho phép truy cập API getAllBikeBrand
+                return mobileAppService.cancel(uid,bikeId);
+            } else {
+                // Người dùng không có quyền truy cập API getAllBikeBrand
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(new ResponseObject("Error", "Unauthorized", null,null));
+            }
+        } catch (AuthenticationFailedException e) {
+            // Xử lý nếu xảy ra lỗi xác thực người dùng
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new ResponseObject("Error", e.getMessage(), null,null));
+        } catch (ValidationException e) {
+            // Xử lý nếu xảy ra lỗi trong việc tìm kiếm người dùng
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ResponseObject("Error", e.getMessage(), null,null));
+        }
+
+    }
+    @CrossOrigin
     @Operation(summary = "for user get filter rent history")
     @GetMapping ("/filter{uid}")
     public ResponseEntity<ResponseObject> getFilterRentHistory(@PathVariable("uid") String uid,

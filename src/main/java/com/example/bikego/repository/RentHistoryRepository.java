@@ -4,6 +4,7 @@ import com.example.bikego.common.RentStatus;
 import com.example.bikego.entity.Bike.Bike;
 import com.example.bikego.entity.RentHistory;
 import com.example.bikego.entity.User;
+import org.hibernate.annotations.Filter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
